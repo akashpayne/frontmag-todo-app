@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { AngularFirestore } from 'angularfire2/firestore';
+import firebase from 'firebase';
 
 /*
   Generated class for the TodosProvider provider.
@@ -9,23 +11,34 @@ import { Injectable } from '@angular/core';
 @Injectable()
 export class TodosProvider {
 
-  constructor() {
+  constructor(public db: AngularFirestore) {
     console.log('Hello TodosProvider Provider');
   }
 
   list() {
-    return [{text: 'Wake up', complete: false}, {text: 'Drink coffee', complete: false}];
+    return this.db.collection('/todos', ref => ref.orderBy('complete').orderBy('text')).valueChanges();
   }
 
-  add(item) {
+  add(text) {
+    const id = this.db.createId();
 
+    return this.db.collection('todos').doc(id).set({
+      id: id,
+      text: text,
+      complete: false,
+      createdAt: firebase.firestore.FieldValue.serverTimestamp(),
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
   }
 
-  complete(item) {
-
+  complete(todo) {
+    return this.db.collection('todos').doc(todo.id).update({
+      complete: todo.complete,
+      updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+    });
   }
 
-  delete(item) {
-
+  delete(todo) {
+    return this.db.collection('todos').doc(todo.id).delete();
   }
 }
