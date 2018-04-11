@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { NavController } from 'ionic-angular';
 import { TodosProvider } from '../../providers/todos/todos';
+import { Observable } from 'rxjs/Observable';
 
 @Component({
   selector: 'page-home',
@@ -9,7 +10,7 @@ import { TodosProvider } from '../../providers/todos/todos';
 })
 export class HomePage {
 
-  public todos: Array<any> = [];
+  public todos: Observable<any[]>;
   public todo: String = '';
 
   constructor(public navCtrl: NavController, public todosProvider: TodosProvider) {
@@ -21,9 +22,8 @@ export class HomePage {
       return;
     }
 
-    this.todos.push({text: this.todo, complete: false});
-
     this.todosProvider.add(this.todo);
+    this.todo = '';
   }
 
   completeTodo(todo) {
@@ -31,9 +31,6 @@ export class HomePage {
   }
 
   deleteTodo(todo) {
-    const index = this.todos.indexOf(todo);
-    this.todos.splice(index, 1);
-
     this.todosProvider.delete(todo);
   }
 }
