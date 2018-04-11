@@ -18,7 +18,7 @@
   </ion-list>
 
   <ion-list>
-    <ion-item-sliding *ngFor="let todo of todos">
+    <ion-item-sliding *ngFor="let todo of todos | async">
 
       <ion-item ngClass="{{todo.complete?'done':''}}">
         <ion-checkbox [(ngModel)]="todo.complete" (ionChange)="completeTodo(todo)"></ion-checkbox>
@@ -34,5 +34,5 @@
     </ion-item-sliding>
   </ion-list>
 
-  <p text-center>Slide an item to left to show more options</p>
+  <p ng-if="todos" text-center>Slide an item to left to show more options</p>
 </ion-content>
