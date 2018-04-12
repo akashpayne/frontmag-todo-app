@@ -1,0 +1,23 @@
+{
+  "name": "offline-sync-todos-functions",
+  "description": "Cloud Functions for Frontmag Todos App",
+  "dependencies": {
+    "firebase-admin": "^5.12.0",
+    "firebase-functions": "^1.0.1"
+  },
+  "devDependencies": {
+    "@types/express": "^4.0.37",
+    "concurrently": "^3.5.1",
+    "tslint": "^5.8.0",
+    "typescript": "^2.6.1"
+  },
+  "scripts": {
+    "lint": "./node_modules/.bin/tslint -p tsconfig.json",
+    "build": "./node_modules/.bin/tsc",
+    "start": "concurrently \"tsc --watch\" \"firebase serve --only functions\"",
+    "deploy": "firebase deploy --only functions",
+    "logs": "firebase functions:log"
+  },
+  "main": "lib/index.js",
+  "private": true
+}
